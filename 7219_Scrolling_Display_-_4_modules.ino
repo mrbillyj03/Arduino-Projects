@@ -18,7 +18,7 @@ int numberOfVerticalDisplays = 1;
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
 String tape_sacrifice="Arduino";
-String tape="MLB Scores 08/05/2018     ATL 5, NYM 4     CWS 8, TB 7     LAA 3, CLE 4     CIN 1, WSH 2     MIA 3, PHI 5     STL 2, PIT 1     COL 5, MIL 4     KC 5, MIN 6     SD 10, CHC 6     BAL 9, TEX 6     DET 0, OAK 6      DET 0, OAK 6     HOU 2, LAD 3     SF 3, ARI 2    TOR 3, SEA 6     NYY 4, BOS 5     ";
+String tape="MLB Scores 08/05/2018     ATL 5, NYM 4     CWS 8, TB 7     LAA 3, CLE 4     CIN 1, WSH 2     MIA 3, PHI 5     STL 2, PIT 1     COL 5, MIL 4     KC 5, MIN 6     SD 10, CHC 6     BAL 9, TEX 6     DET 0, OAK 6     HOU 2, LAD 3     SF 3, ARI 2    TOR 3, SEA 6     NYY 4, BOS 5     ";
 int wait = 40; // In milliseconds
 
 int spacer = 1;
