@@ -1,9 +1,9 @@
 /*
- * 7219 Equalizer by Bill Jenkins
- * Rev. 08/10/2018
+ * 7219 3-input Status Monitor v 1.0 by Bill Jenkins
+ * Rev. 08/13/2018
  * Hardware - 8x32 LED array with MAX7219
- * This sketch simulated the output of a graphic equalizer
- * The number of bands is set by adjusting the value of the wid parameter - see below
+ * This sketch is a 3-input status monitor, showing a "fuel tank" and digital readout for each.
+ * The values displayed range from 0-8. 
 */
 
 #include <SPI.h>
@@ -28,10 +28,8 @@ int numberOfVerticalDisplays = 1;
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
 
-// variables for drawing the graph. The value of wid determines the number of bands displayed.
-// each bar is two pixels wide. 
 
-int x,y,wid;                // for (col,row) addressing of pixels, wid is number of columns apart for bars - do not change, 
+int x,y,wid;           // for (col,row) addressing of pixels, wid is number of columns apart for bars - do not change, 
 float pix[32];         // variables for determining whether a pixel is filled in or not
 
 void credit_screen(String tape)      // Scroll Title, Author
