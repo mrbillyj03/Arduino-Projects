@@ -1,10 +1,10 @@
 
 /*
- * 7219 Random Noise by Bill Jenkins
+ * 7219 3x11 Block by Bill Jenkins
  * Rev. 08/10/2018
  * Hardware - 8x32 LED array with MAX7219
  * This sketch diplays static on the 8x32 LED array to simulate a movie prop for space equipment monitoring
- * and refreshes the screen at an interval of 25 frames/sec.
+ * and refreshes the screen at an interval of 1 sec.
 */
 
 #include <SPI.h>
@@ -58,7 +58,7 @@ void credit_screen(String tape)      // Scroll Title, Author
   int spacer = 1;
   int width = 5 + spacer; // The font width is 5 pixels
 
-  String tape_sac="Arduino";
+  String tape_sac="Arduino";    // This traps the smileyface and heart characters
 
      
   for ( int i = 0 ; i < width * tape.length() + matrix.width() - 1 - spacer; i++ ) 
