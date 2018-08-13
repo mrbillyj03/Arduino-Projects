@@ -1,3 +1,10 @@
+/*
+ * 7219 Ticker by Bill Jenkins
+ * Rev. 08/10/2018
+ * Hardware - 8x32 LED array with MAX7219
+ * This sketch scrolls text you place in thetext field of the credit_screen() function 
+ */
+
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Max72xxPanel.h>
