@@ -5,3 +5,7 @@ an .ino file containing the sketch itself and a Word .docx with a project overvi
 an example sketch.
 These files are free to use and modify without restrictions. 
 If you use them as part of a teaching project, just cite me as a contributing author.
+
+08/13/2018 Status Uodate
+All sketches for the MAX7219 have been moved to their own branch.
+
