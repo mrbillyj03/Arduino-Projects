@@ -1,9 +1,9 @@
 
 /*
- * 7219 Blocks by Bill Jenkins
+ * 7219 Block Static v 1.0 by Bill Jenkins
  * Rev. 08/13/2018
  * Hardware - 8x32 LED array with MAX7219
- * This sketch diplays static on the 8x32 LED array to simulate a movie prop for space equipment monitoring
+ * This sketch diplays random 2x2 blocks on the 8x32 LED array to simulate a movie prop for space equipment monitoring
  * and refreshes the screen at an interval of 1 sec.
 */
 
