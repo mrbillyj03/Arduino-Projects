@@ -92,7 +92,7 @@ void loop()
     minut=0;
     hr++;
   }
-  if (hr==12)pm++;
+  if (hr==12 && minut==0 && sec==0)pm++;
   if (hr==13)hr=1;
 }
 
