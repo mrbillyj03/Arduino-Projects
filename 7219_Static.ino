@@ -1,6 +1,6 @@
 
 /*
- * 7219 Random Noise by Bill Jenkins
+ * 7219 Static by Bill Jenkins
  * Rev. 08/10/2018
  * Hardware - 8x32 LED array with MAX7219
  * This sketch diplays static on the 8x32 LED array to simulate a movie prop for space equipment monitoring
