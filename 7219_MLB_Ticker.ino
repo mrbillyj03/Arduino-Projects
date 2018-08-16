@@ -1,10 +1,10 @@
-/*
- * 7219 Ticker by Bill Jenkins
- * Rev. 08/10/2018
- * Hardware - 8x32 LED array with MAX7219
- * This sketch scrolls text you place in thetext field of the credit_screen() function 
- */
-
+/* 7219 MLB Ticker v1.0 by Bill Jenkins
+ *  Rev. 08/15/2018
+ *  Hardware: 8x32 LED array with MAX7219
+ *  This sketch scrolls the results of Major League Baseball games 
+ *  played on 08/13/2018 in a loop
+*/
+  
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Max72xxPanel.h>
@@ -93,11 +93,11 @@ void setup() {
 
 // Boot Screen 
   test_screen();
-  credit_screen("Ticker v 1.0 by Bill Jenkins");
+  credit_screen("MLB Ticker v 1.0 by Bill Jenkins     ");
  }
 
 void loop() 
 {
-   credit_screen("Your text here");
+   credit_screen("MLB Scores 08/13/2018     MIA 1, ATL 9     NYM 8, NYY 5     CWS 5, DET 9     CLE 10, CIN 3     MIA 1, ATL 6     ARI 3, TEX 5     WSH 6, STL 7     TOR 1, KC 3     SEA 6, OAK 7     LAA 6, SD 3     SF 5, LAD 2     ");
 }
 
