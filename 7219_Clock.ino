@@ -1,3 +1,14 @@
+/* 
+ * 7219 Clock by Bill Jenkins
+ * Rev 08/15/2018
+ * Hardware: 8x32 LED array with MAX7219
+ * This sketch turns the MAX7219 array into a clock in 12-hour 
+ * format with lowercase AM/PM indicator. Colon flashes at 1 Hz. 
+ * Rev 08/16/2018
+ * Fixed AM/PM bug, changed uppercase AM/PM indicator with 
+ * lowercase.
+*/
+  
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Max72xxPanel.h>
@@ -38,9 +49,10 @@ void setup()
   matrix.setRotation(2, 1);    // rotate 90 deg clockwise
   matrix.setRotation(3, 1);    // rotate 90 deg clockwise
 
-  dur=1000;
-  hr=6;
-  minut=19;
+  // set initial time here
+  
+  hr=11;
+  minut=12;
   sec=0;
   pm=0;       // 0 for am, 1 for pm
   randomSeed(analogRead(0));
@@ -55,21 +67,20 @@ void loop()
  
   matrix.drawChar(0,0,char((hr/10%10)+'0'),HIGH,LOW,1);
   matrix.drawChar(6,0,char((hr%10)+'0'),HIGH,LOW,1);
-  matrix.drawPixel(12,2,HIGH);
+  matrix.drawPixel(12,2,HIGH);    // turn colon on
   matrix.drawPixel(12,4,HIGH);
   matrix.drawChar(14,0,char((minut/10%10)+'0'),HIGH,LOW,1);
   matrix.drawChar(20,0,char((minut%10)+'0'),HIGH,LOW,1);
   if (pm%2) 
-    matrix.drawChar(26,0,'P',HIGH,LOW,1);
+    matrix.drawChar(27,0,'p',HIGH,LOW,1);
   else
-    matrix.drawChar(26,0,'A',HIGH,LOW,1);  
+    matrix.drawChar(27,0,'a',HIGH,LOW,1);  
   matrix.write();
   delay(950);
-  matrix.drawPixel(12,2,LOW);
+  matrix.drawPixel(12,2,LOW);   // turn colon off 
   matrix.drawPixel(12,4,LOW);
   matrix.write();
   delay(45);      // 995 ms "dur" to make the clock more accurate
-                  // clock lost 01:20 min. / 4:15 hrs with dur=1000ms
   sec++;
   if (sec==60)
   {
@@ -81,9 +92,7 @@ void loop()
     minut=0;
     hr++;
   }
-  if (hr>12)
-  {
-    hr=1;
-    pm++;
-  }
+  if (hr==12)pm++;
+  if (hr==13)hr=1;
 }
+
