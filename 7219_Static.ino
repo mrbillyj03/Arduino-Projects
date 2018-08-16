@@ -1,6 +1,6 @@
 
 /*
- * 7219 Static by Bill Jenkins
+ * 7219 Random Noise by Bill Jenkins
  * Rev. 08/10/2018
  * Hardware - 8x32 LED array with MAX7219
  * This sketch diplays static on the 8x32 LED array to simulate a movie prop for space equipment monitoring
@@ -28,7 +28,7 @@ int numberOfVerticalDisplays = 1;
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
 int x,y, dur;           // for (col,row) addressing of pixels, frequency of screen updates (in milliseconds)
-
+float frameswitch;      // determines % probability of a given pixel turning on
 void test_screen()
 {
   matrix.fillScreen(HIGH);
@@ -99,24 +99,23 @@ void setup() {
   test_screen();
   credit_screen("Static v 1.0 by Bill Jenkins");
   randomSeed(analogRead(0));
-  dur=20;
+  dur=33;
  }
 
-void loop() {
-
-matrix.fillScreen(LOW);               // clear screen
-
-
-for (y=0; y<matrix.height(); y++)     // row level stuff   
-{                                           
-  for (x=0; x<matrix.width(); x++)    // pixel level stuff
-  {
-    if (float(random(0,100)>35.0))
+void loop() 
+{
+  matrix.fillScreen(LOW);               // clear screen
+//frameswitch=float(random(0,101));
+  frameswitch=66.7;
+  for (y=0; y<matrix.height(); y++)     // row level stuff   
+  {                                           
+    for (x=0; x<matrix.width(); x++)    // pixel level stuff
+    {
+      if (float(random(0,101))<frameswitch)
       matrix.drawPixel(x,y,HIGH);     
-  }
-}  
-matrix.write();
-delay(dur);
-
+    }
+  }  
+  matrix.write();
+  delay(dur);
 }
 
