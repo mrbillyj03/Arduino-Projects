@@ -1,9 +1,9 @@
-
 /*
- * 7219 Big Block Static v 1.0 by Bill Jenkins
- * Rev. 08/13/2018
+ * 7219 Big Block Static by Bill Jenkins
+ * Rev. 08/10/2018
  * Hardware - 8x32 LED array with MAX7219
- * This sketch diplays random 4x4 pixel blocks on the 8x32 LED array to simulate a movie prop for space equipment monitoring
+ * This sketch diplays 4x4 blocks on the 8x32 LED array 
+ * to simulate a movie prop for space equipment monitoring
  * and refreshes the screen at an interval of 1 sec.
 */
 
@@ -27,39 +27,13 @@ int numberOfVerticalDisplays = 1;
 // declare instance of screen
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
-int x,y, dur;           // for (col,row) addressing of pixels, frequency of screen updates (in milliseconds)
-float frameswitch;
-
-void test_screen()
-{
-  matrix.fillScreen(HIGH);
-  matrix.drawChar(4,1,'T',LOW,HIGH,1);
-  matrix.drawChar(10,1,'E',LOW,HIGH,1);
-  matrix.drawChar(16,1,'S',LOW,HIGH,1);
-  matrix.drawChar(22,1,'T',LOW,HIGH,1);
-  matrix.write();
-  delay(500);
-  matrix.fillScreen(HIGH);
-  matrix.write();
-  delay(500);
-  matrix.fillScreen(LOW);
-  matrix.drawChar(4,0,'P',HIGH,LOW,1);
-  matrix.drawChar(10,0,'A',HIGH,LOW,1);
-  matrix.drawChar(16,0,'S',HIGH,LOW,1);
-  matrix.drawChar(22,0,'S',HIGH,LOW,1);
-  matrix.write();
-  delay(500);
-  matrix.fillScreen(LOW);
-  delay(500);
-}
-
-void credit_screen(String tape)      // Scroll Title, Author
+void credit_screen()      // Scroll Title, Author
 {
   int spacer = 1;
   int width = 5 + spacer; // The font width is 5 pixels
 
-  String tape_sac="Arduino";
-
+  String tape_sac="Arduino";    // This puts Mr. Smiley and Ms. Heart in jail
+  String tape="Big Block Static"; 
      
   for ( int i = 0 ; i < width * tape.length() + matrix.width() - 1 - spacer; i++ ) 
   {
@@ -81,9 +55,9 @@ void credit_screen(String tape)      // Scroll Title, Author
   }
 }
 
-void setup() {
-
-  matrix.setIntensity(7); // Use a value between 0 and 15 for brightness
+void setup() 
+{
+  matrix.setIntensity(3); // Use a value between 0 and 15 for brightness
 
   // Adjust to your own needs
   matrix.setPosition(0, 0, 0); // The first display is at <0, 0>
@@ -95,47 +69,50 @@ void setup() {
   matrix.setRotation(1, 1);    // rotate 90 deg clockwise
   matrix.setRotation(2, 1);    // rotate 90 deg clockwise
   matrix.setRotation(3, 1);    // rotate 90 deg clockwise
-
-// Boot Screen 
- test_screen();
- credit_screen("Big Block Static v 1.0 by Bill Jenkins");
+  
+  credit_screen();             // Boot Screen 
 
   randomSeed(analogRead(0));
-  dur=1000;
- }
+}
 
-void loop() {
+void loop() 
+{
+  int x,y;            // for (col,row) addressing of pixels
+  int dur=1000;       // frequency of screen updates (in milliseconds)
+  float frameswitch;  // probability of a given block lighting in a given frame
 
-matrix.fillScreen(LOW);               // clear screen
-frameswitch=float(random(0,100));
-
-for (y=0; y<matrix.height(); y+=4)     // row level stuff   
-{                                           
-  for (x=0; x<matrix.width(); x+=4)    // pixel level stuff
+  while (1)
   {
-    if (float(random(0,100)>frameswitch))
-    {
-      matrix.drawPixel(x,y,HIGH);     
-      matrix.drawPixel(x,y+1,HIGH);     
-      matrix.drawPixel(x,y+2,HIGH);     
-      matrix.drawPixel(x,y+3,HIGH);     
-      matrix.drawPixel(x+1,y,HIGH);     
-      matrix.drawPixel(x+1,y+1,HIGH);     
-      matrix.drawPixel(x+1,y+2,HIGH);     
-      matrix.drawPixel(x+1,y+3,HIGH);     
-      matrix.drawPixel(x+2,y,HIGH);     
-      matrix.drawPixel(x+2,y+1,HIGH);     
-      matrix.drawPixel(x+2,y+2,HIGH);     
-      matrix.drawPixel(x+2,y+3,HIGH);     
-      matrix.drawPixel(x+3,y,HIGH);     
-      matrix.drawPixel(x+3,y+1,HIGH);     
-      matrix.drawPixel(x+3,y+2,HIGH);     
-      matrix.drawPixel(x+3,y+3,HIGH);     
-    }
-  }
-}  
-matrix.write();
-delay(dur);
+    matrix.fillScreen(LOW);               // clear screen
+    frameswitch=float(random(0,101));
 
+    for (y=0; y<matrix.height(); y+=4)     // row level stuff   
+    {                                           
+      for (x=0; x<matrix.width(); x+=4)    // pixel level stuff
+      {
+        if (float(random(0,101)<frameswitch))
+        {
+          matrix.drawPixel(x,y,HIGH);     
+          matrix.drawPixel(x,y+1,HIGH);     
+          matrix.drawPixel(x,y+2,HIGH);     
+          matrix.drawPixel(x,y+3,HIGH);     
+          matrix.drawPixel(x+1,y,HIGH);     
+          matrix.drawPixel(x+1,y+1,HIGH);     
+          matrix.drawPixel(x+1,y+2,HIGH);     
+          matrix.drawPixel(x+1,y+3,HIGH);     
+          matrix.drawPixel(x+2,y,HIGH);     
+          matrix.drawPixel(x+2,y+1,HIGH);     
+          matrix.drawPixel(x+2,y+2,HIGH);     
+          matrix.drawPixel(x+2,y+3,HIGH);     
+          matrix.drawPixel(x+3,y,HIGH);     
+          matrix.drawPixel(x+3,y+1,HIGH);     
+          matrix.drawPixel(x+3,y+2,HIGH);     
+          matrix.drawPixel(x+3,y+3,HIGH);     
+        }
+      }
+    }  
+    matrix.write();
+    delay(dur);
+  }
 }
 

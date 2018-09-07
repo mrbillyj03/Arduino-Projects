@@ -1,10 +1,12 @@
 
 /*
- * 7219 Block Static v 1.0 by Bill Jenkins
- * Rev. 08/13/2018
+ * 7219 Block Static by Bill Jenkins
+ * Rev. 08/25/2018
  * Hardware - 8x32 LED array with MAX7219
- * This sketch diplays random 2x2 blocks on the 8x32 LED array to simulate a movie prop for space equipment monitoring
- * and refreshes the screen at an interval of 1 sec.
+ *            10k potentiometer
+ * This sketch diplays static on the 8x32 LED array to simulate a movie prop for space equipment monitoring
+ * and refreshes the screen at an interval set by reading
+ * from a 10k pot wiper connected to A2.
 */
 
 #include <SPI.h>
@@ -20,46 +22,34 @@
 //  CS          D10
 //  CLK         D13
 
-int pinCS = 10; // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
+//  Connection chart for 10k potentiometer for analogRead
+//  from pin A2. This determines the refresh rate. D2 is set
+//  high to provide +5V to the pot. 
+//  10k pot   UNO
+//  -------   ---
+//  (+)       D2      // set D2 HIGH for +5V to pot
+//  (Wiper)   A2      // reading taken from A2
+//  (-)       GND
+
+int pin5V=2;        // set high, D2 delivers +5 to pot
+int pinRead=2;      // pot wiper goes to A2, readings  
+int pinCS = 10; 
+// Attach CS to this pin, DIN to MOSI (D11) and CLK to SCK (D13)
+// (cf http://arduino.cc/en/Reference/SPI )
+
 int numberOfHorizontalDisplays = 4;
 int numberOfVerticalDisplays = 1;
 
 // declare instance of screen
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
-int x,y, dur;           // for (col,row) addressing of pixels, frequency of screen updates (in milliseconds)
-float frameswitch;
-
-void test_screen()
-{
-  matrix.fillScreen(HIGH);
-  matrix.drawChar(4,1,'T',LOW,HIGH,1);
-  matrix.drawChar(10,1,'E',LOW,HIGH,1);
-  matrix.drawChar(16,1,'S',LOW,HIGH,1);
-  matrix.drawChar(22,1,'T',LOW,HIGH,1);
-  matrix.write();
-  delay(500);
-  matrix.fillScreen(HIGH);
-  matrix.write();
-  delay(500);
-  matrix.fillScreen(LOW);
-  matrix.drawChar(4,0,'P',HIGH,LOW,1);
-  matrix.drawChar(10,0,'A',HIGH,LOW,1);
-  matrix.drawChar(16,0,'S',HIGH,LOW,1);
-  matrix.drawChar(22,0,'S',HIGH,LOW,1);
-  matrix.write();
-  delay(500);
-  matrix.fillScreen(LOW);
-  delay(500);
-}
 
 void credit_screen(String tape)      // Scroll Title, Author
 {
   int spacer = 1;
   int width = 5 + spacer; // The font width is 5 pixels
 
-  String tape_sac="Arduino";
-
+  String tape_sac="Arduino";    // This puts Mr. Smiley and Ms. Heart in jail
      
   for ( int i = 0 ; i < width * tape.length() + matrix.width() - 1 - spacer; i++ ) 
   {
@@ -82,9 +72,9 @@ void credit_screen(String tape)      // Scroll Title, Author
 }
 
 
-void setup() {
-
-  matrix.setIntensity(7); // Use a value between 0 and 15 for brightness
+void setup() 
+{
+  matrix.setIntensity(3); // Use a value between 0 and 15 for brightness
 
   // Adjust to your own needs
   matrix.setPosition(0, 0, 0); // The first display is at <0, 0>
@@ -96,36 +86,42 @@ void setup() {
   matrix.setRotation(1, 1);    // rotate 90 deg clockwise
   matrix.setRotation(2, 1);    // rotate 90 deg clockwise
   matrix.setRotation(3, 1);    // rotate 90 deg clockwise
-
+  
+  pinMode(pin5V,OUTPUT);      // D2 set HIGH, provides +5V to pot
+  digitalWrite(pin5V,HIGH);
+  
 // Boot Screen 
-  test_screen();
-  credit_screen("Block Static v 1.0 by Bill Jenkins");
+  credit_screen("Block Static");
     
   randomSeed(analogRead(0));
-  dur=1000;
- }
-
-void loop() {
-
-matrix.fillScreen(LOW);               // clear screen
-
-frameswitch=float(random(0,100));
-
-for (y=0; y<matrix.height(); y+=2)     // row level stuff   
-{                                           
-  for (x=0; x<matrix.width(); x+=2)    // pixel level stuff
-  {
-    if (float(random(0,100)>frameswitch))
-    {
-      matrix.drawPixel(x,y,HIGH);     
-      matrix.drawPixel(x,y+1,HIGH);     
-      matrix.drawPixel(x+1,y,HIGH);     
-      matrix.drawPixel(x+1,y+1,HIGH);     
-    }
-  }
-}  
-matrix.write();
-delay(dur);
-
 }
 
+void loop() 
+{
+  int x,y;            // for (col,row) addressing of pixels
+  int dur;            // frequency of screen updates (in milliseconds)
+  float multi=1.5;    // multiplier for analogRead     
+  float frameswitch;  // percent probability of a block turning on or not
+  while(1)
+  {
+    dur=int(analogRead(pinRead)*multi);   // read pot for delay
+    matrix.fillScreen(LOW);               // clear screen
+    frameswitch=float(random(0,101));     // set pixel threshold 
+
+    for (y=0; y<matrix.height(); y+=2)     // row level stuff   
+    {                                           
+      for (x=0; x<matrix.width(); x+=2)    // pixel level stuff
+      {
+        if (float(random(0,101)<frameswitch))
+        {
+          matrix.drawPixel(x,y,HIGH);     // draw block if needed 
+          matrix.drawPixel(x,y+1,HIGH);     
+          matrix.drawPixel(x+1,y,HIGH);     
+          matrix.drawPixel(x+1,y+1,HIGH);     
+        }
+      }
+    }  
+    matrix.write();
+    delay(dur);
+  }  
+}
