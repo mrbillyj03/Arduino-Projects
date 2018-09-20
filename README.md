@@ -1,4 +1,4 @@
-# Arduino-Projects - projects-for-2004A
+# Arduino-Projects - Projects-for-2004A
 
 These files are for Arduino projects using the 2004A 20x4 character display with the I2C backpack. 
 These files are free to use and modify without restrictions. 
