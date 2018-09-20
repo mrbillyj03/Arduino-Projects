@@ -144,7 +144,6 @@ void loop()
   lcd.print(p2dig(RTC.h, DEC));         // print hours
   lcd.print(":");                       // print colon
   lcd.print(p2dig(RTC.m, DEC));         // print minutes
-  //  PRINT(":", p2dig(RTC.s, DEC));    uncomment for seconds
   if (RTC.status(DS3231_12H) == DS3231_ON)
     lcd.print(RTC.pm ? " pm" : " am");  // print am or pm
   lcd.setCursor(0, 2);
